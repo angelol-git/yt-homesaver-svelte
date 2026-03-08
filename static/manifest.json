@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "YTHomeSaver",
+  "version": "1.0",
+  "description": "Save YouTube recommendations.",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": ["storage", "activeTab"],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*",
+        "https://www.youtube.com/?app=desktop"
+      ],
+      "js": ["content_youtube.js"],
+      "type": "module"
+    }
+  ]
+}
