@@ -1,13 +1,13 @@
 <script>
   let { video } = $props();
+  import { CameraOff } from "@lucide/svelte";
   //Check if thumbnail exists could not have been scraped properly
   let imageLoaded = $state(false);
-  $inspect(video);
 </script>
 
 <a
   href={video.link}
-  class="flex gap-2 p-2 bg-gray-100 border border-gray-200 rounded"
+  class="group flex gap-2 p-2 bg-gray-100 border border-gray-200 rounded hover:bg-gray-200 hover:border-gray-300 transition-colors duration-100"
   target="_blank"
 >
   {#if video.thumbnail}
@@ -28,9 +28,9 @@
     </div>
   {:else}
     <div
-      class="relative rounded-md w-25 h-14 bg-gray-200 p-2 flex items-center justify-center text-center"
+      class="transition-colors duration-100 relative rounded-md w-25 h-14 bg-blue-100 p-2 flex items-center justify-center text-center"
     >
-      <div class="text-xs text-gray-800">No thumbnail available</div>
+      <CameraOff size={20} class="stroke-gray-700" />
       <div
         class="absolute right-2 bottom-2 z-10 bg-white px-1 rounded-md text-xs"
       >
@@ -45,6 +45,6 @@
     >
       {video.title}
     </h3>
-    <p class="text-gray-500 text-xs font">Creator</p>
+    <p class="text-gray-600 text-xs font">Creator</p>
   </div>
 </a>
