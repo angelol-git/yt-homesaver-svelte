@@ -1,1 +1,11 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@theme {
+  --color-burgundy: #b86b71;
+  --color-cream: #fffefd;
+  --color-cream-muted: #f7f5f0;
+  --color-cream-border: #e9e6dd;
+  --color-primary: #291f19;
+  --color-secondary: #72655f;
+  --color-cream-stroke: #a39b94;
+}

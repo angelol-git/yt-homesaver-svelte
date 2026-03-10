@@ -27,8 +27,9 @@
   });
 </script>
 
-<div class="w-87.5 h-125 border-gray-400 border flex flex-col gap-1">
+<div class="w-87.5 h-125 bg-cream flex flex-col gap-1">
   <Header />
   <Nav {sets} {currentSet} onUpdate={updateSet} />
+  <div class="w-full border-b border-cream-border pb-2"></div>
   <SetList {sets} {currentSet} />
 </div>
