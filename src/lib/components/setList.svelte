@@ -5,14 +5,14 @@
   let { sets, currentSet } = $props();
 </script>
 
-<div class="flex flex-col gap-2 p-2 overflow-y-auto h-full">
+<div class="flex flex-col gap-2 p-2 pb-4 overflow-y-auto h-full">
   {#key currentSet}
     <div in:fade={{ duration: 200 }} class="flex flex-col gap-2 h-full">
       {#if sets[currentSet]?.videos?.length > 0}
         {#each sets[currentSet].videos as v (v.id)}
           <Video video={v} />
         {/each}
-        <div class="text-secondary text-xs mt-auto pb-2">
+        <div class="text-secondary text-xs py-2 pb-4">
           Set added: {sets[currentSet].timeAdded}
         </div>
       {:else}
