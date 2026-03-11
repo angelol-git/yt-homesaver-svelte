@@ -17,7 +17,14 @@
         "https://www.youtube.com/?app=desktop"
       ],
       "js": ["content_youtube.js"],
+      "run_at": "document_end",
       "type": "module"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["page_script.js"],
+      "matches": ["https://www.youtube.com/*"]
     }
   ],
   "icons": {
