@@ -10,20 +10,19 @@
 
 <nav class="flex gap-1 px-4 justify-between">
   {#each sets as set, index}
-    {@const pillColor = colorClasses[set.color][currentSet === index ? "selected" : "default"]}
+    {@const pillColor =
+      colorClasses[set.color][currentSet === index ? "selected" : "default"]}
     <button
       onclick={() => {
         onUpdate(index);
       }}
-      class="hover:shadow-md transition-colors flex items-center justify-center gap-2 transition-shadow duration-100 px-3 py-1 rounded-full cursor-pointer text-xs"
+      class="hover:shadow-md flex items-center justify-center gap-2 transition-shadow duration-100 px-3 py-1 rounded-full cursor-pointer text-xs"
       class:bg-burgundy={currentSet === index}
       class:text-white={currentSet === index}
       class:text-primary={currentSet !== index}
       class:bg-cream-muted={currentSet !== index}
     >
-      <div
-        class="rounded-full w-2 h-2 z-10 shrink-0 {pillColor}"
-      ></div>
+      <div class="rounded-full w-2 h-2 z-10 shrink-0 {pillColor}"></div>
 
       <div class="text-nowrap">
         Set {index + 1}

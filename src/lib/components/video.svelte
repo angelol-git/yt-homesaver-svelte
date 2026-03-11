@@ -28,7 +28,7 @@
     </div>
   {:else}
     <div
-      class="transition-colors duration-100 relative rounded-md w-25 h-14 bg-blue-100 p-2 flex items-center justify-center text-center"
+      class="transition-colors duration-100 relative rounded-md w-25 h-14 bg-stone-200 p-2 flex items-center justify-center text-center"
     >
       <CameraOff size={20} class="stroke-gray-700" />
       <div
