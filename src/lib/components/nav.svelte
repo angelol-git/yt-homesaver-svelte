@@ -1,7 +1,7 @@
 <script>
   let { sets, currentSet, onUpdate } = $props();
   const colorClasses = {
-    orange: { default: "bg-[#2d8ab3]", selected: "bg-[#7ab8d4]" },
+    blue: { default: "bg-[#2d8ab3]", selected: "bg-[#7ab8d4]" },
     green: { default: "bg-[#2a9b85]", selected: "bg-[#7fc4b0]" },
     pink: { default: "bg-[#d64982]", selected: "bg-[#e899b3]" },
     yellow: { default: "bg-[#e5a53d]", selected: "bg-[#f0c87a]" },

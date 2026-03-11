@@ -8,7 +8,7 @@
   const MAX_SETS = 4;
   let sets = $state([]);
   let currentSet = $state(0);
-  let colors = ["orange", "green", "pink", "yellow"];
+  let colors = ["blue", "green", "pink", "yellow"];
   function updateSet(index) {
     currentSet = index;
   }
