@@ -2,11 +2,9 @@
 (function () {
   "use strict";
 
-  console.log("[YTHomeSaver PageScript] Injected into page");
-
   window.addEventListener("message", function (event) {
     if (event.source !== window) return;
-    if (event.data.type !== "YTHOME_REQUEST_DATA") return;
+    if (event.data.type !== "HOME_REQUEST_DATA") return;
 
     let data = null;
     let attempts = 0;
@@ -25,7 +23,7 @@
         setTimeout(checkForData, 250);
       } else {
         console.log(
-          "[YTHomeSaver PageScript] ytInitialData not found after",
+          "[HomeSaver PageScript] ytInitialData not found after",
           maxAttempts,
           "attempts",
         );
@@ -36,7 +34,7 @@
     function sendData() {
       window.postMessage(
         {
-          type: "YTHOME_DATA",
+          type: "HOME_DATA",
           payload: data,
         },
         "*",
@@ -49,12 +47,12 @@
   if (location.pathname === "/") {
     setTimeout(function () {
       if (window.ytInitialData) {
-        console.log(
-          "[YTHomeSaver PageScript] Auto-sending ytInitialData on page load",
-        );
+        // console.log(
+        //   "[HomeSaver PageScript] Auto-sending ytInitialData on page load",
+        // );
         window.postMessage(
           {
-            type: "YTHOME_DATA",
+            type: "HOME_DATA",
             payload: window.ytInitialData,
           },
           "*",
