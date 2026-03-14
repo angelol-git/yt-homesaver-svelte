@@ -4,14 +4,13 @@ const MAX_SET = 4;
 const extensionAPI = typeof browser !== "undefined" ? browser : chrome;
 
 let isProcessing = false;
-let lastProcessedDataHash = null;
+let lastProcessedDataKey = null;
 let domObserver = null;
 let navigationDebounceTimer = null;
 
-// Track navigation state to reset hash when leaving homepage
 let wasOnHomepage = location.pathname === "/";
 
-function generateDataHash(videoIds) {
+function generateDataKey(videoIds) {
   return videoIds.slice(0, MAX_VIDEOS_PER_SET).join("|");
 }
 
@@ -24,7 +23,6 @@ function init() {
   setupDomObserver();
 }
 
-// Wait for DOM to be ready and videos to appear
 function waitForDomAndParse() {
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
@@ -44,39 +42,13 @@ function waitForDomAndParse() {
 function setupNavigationListener() {
   let previousUrl = location.href;
 
-  // YouTube's internal navigation event
-  window.addEventListener("yt-navigate-finish", () => {
-    const currentUrl = location.href;
-    const isOnHomepage = location.pathname === "/";
-
-    if (wasOnHomepage && !isOnHomepage) {
-      console.log("[HomeSaver] Navigated away from homepage - resetting hash");
-      lastProcessedDataHash = null;
-    }
-
-    wasOnHomepage = isOnHomepage;
-    if (isOnHomepage && currentUrl !== previousUrl) {
-      previousUrl = currentUrl;
-      console.log("[HomeSaver] Navigated to homepage");
-
-      clearTimeout(navigationDebounceTimer);
-      navigationDebounceTimer = setTimeout(() => {
-        parseAndSaveVideos();
-      }, 3000);
-    }
-  });
-
-  // Fallback: observe URL changes
   const urlObserver = new MutationObserver(() => {
     const currentUrl = location.href;
     if (currentUrl !== previousUrl) {
       const isOnHomepage = location.pathname === "/";
 
       if (wasOnHomepage && !isOnHomepage) {
-        console.log(
-          "[HomeSaver] Navigated away from homepage (fallback) - resetting hash",
-        );
-        lastProcessedDataHash = null;
+        lastProcessedDataKey = null;
       }
 
       wasOnHomepage = isOnHomepage;
@@ -85,6 +57,7 @@ function setupNavigationListener() {
       if (isOnHomepage) {
         clearTimeout(navigationDebounceTimer);
         navigationDebounceTimer = setTimeout(() => {
+          console.log("[HomeSaver] Navigated to homepage (observer)");
           parseAndSaveVideos();
         }, 3000);
       }
@@ -93,8 +66,6 @@ function setupNavigationListener() {
 
   urlObserver.observe(document, { subtree: true, childList: true });
 }
-
-// Observe DOM changes to detect new videos
 function setupDomObserver() {
   let domChangeTimeout = null;
 
@@ -266,29 +237,26 @@ async function parseAndSaveVideos() {
     }
 
     const videoLinks = videos.map((v) => v.link);
-    const dataHash = generateDataHash(videoLinks);
+    const dataKey = generateDataKey(videoLinks);
 
-    // Check if this is the same data as last time
-    if (dataHash === lastProcessedDataHash) {
+    if (dataKey === lastProcessedDataKey) {
       console.log("[HomeSaver] Same data as last processed, skipping save");
       isProcessing = false;
       return;
     }
 
-    // Check against stored data
     const stored = await getStoredData();
     const lastSet = stored[0]?.videos || [];
     const lastSetVideoLinks = lastSet.map((v) => v.link);
-    const lastSetHash = generateDataHash(lastSetVideoLinks);
+    const lastSetKey = generateDataKey(lastSetVideoLinks);
 
-    if (dataHash === lastSetHash) {
+    if (dataKey === lastSetKey) {
       console.log("[HomeSaver] Data matches stored set, skipping save");
-      lastProcessedDataHash = dataHash;
+      lastProcessedDataKey = dataKey;
       isProcessing = false;
       return;
     }
 
-    // Save the new set
     const set = {
       setId: crypto.randomUUID(),
       timeAdded: new Date().toLocaleString(),
@@ -296,7 +264,7 @@ async function parseAndSaveVideos() {
     };
 
     await saveToStorage(set);
-    lastProcessedDataHash = dataHash;
+    lastProcessedDataKey = dataKey;
   } catch (error) {
     console.error("[HomeSaver] Error in parseAndSaveVideos:", error);
   } finally {
@@ -304,7 +272,6 @@ async function parseAndSaveVideos() {
   }
 }
 
-// Get stored data
 function getStoredData() {
   return new Promise((resolve) => {
     extensionAPI.storage.local.get("homesaver", (result) => {
@@ -313,7 +280,6 @@ function getStoredData() {
   });
 }
 
-// Save to storage
 async function saveToStorage(newSet) {
   return new Promise((resolve) => {
     extensionAPI.storage.local.get("homesaver", (result) => {
