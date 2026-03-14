@@ -13,7 +13,7 @@
     currentSet = index;
   }
   onMount(async () => {
-    const data = await getStorage("yt-homesaver");
+    const data = await getStorage("homesaver");
     sets = data?.sets || [];
 
     if (sets.length < 4) {

@@ -57,7 +57,8 @@ export const devData = {
           link: "https://youtube.com/watch?v=sB0xy74Zrj8",
           thumbnail:
             "https://i.ytimg.com/vi/sB0xy74Zrj8/hq720.jpg?sqp=-oaymwEnCOgCEMoBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLA_cfj_M8R-qUhcdNAmI3dp6Q9UqQ",
-          title: "UNCHARTED 4: A Thief's End - E3 2015 - Sam Pursuit Gameplay | PS4",
+          title:
+            "UNCHARTED 4: A Thief's End - E3 2015 - Sam Pursuit Gameplay | PS4",
         },
       ],
     },
@@ -133,9 +134,9 @@ export function initDevData(storage) {
     async setup() {
       // Only initialize in browser (not extension)
       if (typeof chrome === "undefined" || !chrome.storage) {
-        const existing = await getStorage("yt-homesaver");
+        const existing = await getStorage("homesaver");
         if (!existing) {
-          await setStorage("yt-homesaver", devData);
+          await setStorage("homesaver", devData);
           console.log("Dev data initialized");
         }
       }

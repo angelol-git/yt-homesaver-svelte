@@ -235,8 +235,8 @@ async function parseAndSaveVideos(data) {
 // Get stored data
 function getStoredData() {
   return new Promise((resolve) => {
-    extensionAPI.storage.local.get("yt-homesaver", (result) => {
-      resolve(result["yt-homesaver"]?.sets || []);
+    extensionAPI.storage.local.get("homesaver", (result) => {
+      resolve(result["homesaver"]?.sets || []);
     });
   });
 }
@@ -244,8 +244,8 @@ function getStoredData() {
 // Save to storage
 async function saveToStorage(newSet) {
   return new Promise((resolve) => {
-    extensionAPI.storage.local.get("yt-homesaver", (result) => {
-      const existingData = result["yt-homesaver"]?.sets || [];
+    extensionAPI.storage.local.get("homesaver", (result) => {
+      const existingData = result["homesaver"]?.sets || [];
       const updatedSets = [newSet, ...existingData];
 
       if (updatedSets.length > MAX_SET) {
@@ -253,7 +253,7 @@ async function saveToStorage(newSet) {
       }
 
       extensionAPI.storage.local.set(
-        { "yt-homesaver": { sets: updatedSets } },
+        { homesaver: { sets: updatedSets } },
         () => {
           console.log("[YTHomeSaver] New set saved to storage");
           resolve();
